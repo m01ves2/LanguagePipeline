@@ -67,6 +67,7 @@ namespace Pipeline.Lexer.TokenResolver
             return chars;
         }
 
+
         private IEnumerable<Token> SplitBadToken(RawToken badToken)
         {
             string text = badToken.Text;
@@ -86,16 +87,18 @@ namespace Pipeline.Lexer.TokenResolver
                 }
 
                 if (match != null) {
+                    // валидный оператор
                     yield return new Token(match, type, pos);
                     text = text.Substring(match.Length);
                     pos += match.Length;
                 }
                 else {
-                    // символ не оператор
+                    // символ не оператор → определяем тип
                     char c = text[0];
+
                     TokenType t = char.IsLetter(c) ? TokenType.Identifier :
                                   char.IsDigit(c) ? TokenType.Number :
-                                  TokenType.Bad;
+                                  TokenType.Bad;   // <--- вот здесь ^ превратится в Bad
 
                     yield return new Token(c.ToString(), t, pos);
 
@@ -104,5 +107,6 @@ namespace Pipeline.Lexer.TokenResolver
                 }
             }
         }
+
     }
 }

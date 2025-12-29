@@ -83,10 +83,28 @@ namespace Pipeline.Lexer
                             _classifier.Reset();
                             break;
                         }
+                    //case ClassifierAction.Error: {
+                    //        RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
+                    //        tokens.AddRange(_tokenResolver.Resolve(rawToken));
+                    //        _classifier.Reset();
+                    //        break;
+                    //    }
                     case ClassifierAction.Error: {
-                            RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                            tokens.AddRange(_tokenResolver.Resolve(rawToken));
-                            _classifier.Reset();
+                            if (!_rawTokenBuilder.isEmpty()) {
+                                // Выпустить уже накопленный токен
+                                RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
+                                tokens.AddRange(_tokenResolver.Resolve(rawToken));
+
+                            }
+
+                            // Создать отдельный RawToken для текущего Bad-символа
+                            _rawTokenBuilder.Start(index);
+                            _rawTokenBuilder.Append(c);
+                            RawToken badRawToken = _rawTokenBuilder.Build(RawTokenKind.Bad); // метод Build с явным символом
+                            tokens.AddRange(_tokenResolver.Resolve(badRawToken));
+
+                            _classifier.Reset(); // Classifier в Start
+                            isReprocess = false; // символ уже обработан
                             break;
                         }
                 }

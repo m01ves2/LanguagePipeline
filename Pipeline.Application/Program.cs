@@ -10,7 +10,7 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "let a =>(2+3);";
+            string input = "let a =>^(2+3);==>=";
 
             IReader reader = new Reader(input);
             ITokenResolver resolver = new TokenResolver();

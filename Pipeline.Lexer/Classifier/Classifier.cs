@@ -77,11 +77,9 @@
                 return ClassifierAction.Continue;
             }
             else if (isOperator(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {
-                State = ClassifierState.Bad;
                 return ClassifierAction.Error;
             }
         }
@@ -89,7 +87,6 @@
         private ClassifierAction ProcessNumber(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (char.IsLetter(c)) {
@@ -100,44 +97,36 @@
                 return ClassifierAction.Continue;
             }
             else if (isOperator(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {
-                State = ClassifierState.Bad;
                 return ClassifierAction.Error;
             }
         }
         private ClassifierAction ProcessOperator(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (char.IsLetter(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else if (char.IsDigit(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else if (isOperator(c)) {
                 return ClassifierAction.Continue;
             }
             else {
-                State = ClassifierState.Bad;
                 return ClassifierAction.Error;
             }
         }
         private ClassifierAction ProcessBad(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (isOperator(c)) {
-                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {
