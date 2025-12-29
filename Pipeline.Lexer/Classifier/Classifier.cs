@@ -55,7 +55,6 @@
                 return ClassifierAction.Continue;
             }
             else if (isOperator(c)) {
-                //TODO CurrentTokenType = 
                 State = ClassifierState.Operator;
                 return ClassifierAction.Continue;
             }
@@ -68,7 +67,7 @@
         private ClassifierAction ProcessIdentifier(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (char.IsLetter(c)) {
@@ -78,7 +77,7 @@
                 return ClassifierAction.Continue;
             }
             else if (isOperator(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {
@@ -90,7 +89,7 @@
         private ClassifierAction ProcessNumber(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (char.IsLetter(c)) {
@@ -101,7 +100,7 @@
                 return ClassifierAction.Continue;
             }
             else if (isOperator(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {
@@ -112,15 +111,15 @@
         private ClassifierAction ProcessOperator(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (char.IsLetter(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else if (char.IsDigit(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else if (isOperator(c)) {
@@ -134,11 +133,11 @@
         private ClassifierAction ProcessBad(char c)
         {
             if (char.IsWhiteSpace(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.Emit;
             }
             else if (isOperator(c)) {
-                State = ClassifierState.Start;
+                //State = ClassifierState.Start;
                 return ClassifierAction.EmitAndReprocess;
             }
             else {

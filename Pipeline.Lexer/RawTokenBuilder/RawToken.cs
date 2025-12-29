@@ -8,5 +8,5 @@
         Operator, // +, *, =, >, ), (,
     }
 
-    public record RawToken(string Text, RawTokenKind Type, int Position);
+    public record RawToken(string Text, RawTokenKind Kind, int Position);
 }

@@ -2,7 +2,7 @@
 
 namespace Pipeline.Lexer.TokenBuilder
 {
-    internal class TokenBuilder : ITokenBuilder
+    internal class RawTokenBuilder : IRawTokenBuilder
     {
         private StringBuilder _sb = new StringBuilder();
         private int _startPosition = -1;
@@ -27,6 +27,11 @@ namespace Pipeline.Lexer.TokenBuilder
         {
             _startPosition = -1;
             _sb.Clear();
+        }
+
+        public bool isEmpty()
+        {
+            return _sb.Length == 0;
         }
     }
 }

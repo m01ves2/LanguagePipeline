@@ -6,11 +6,13 @@
         Bad,
         Identifier, //x, foo, bar
         Number, //123
+        Equal, //=
         Lambda, //=>
         Plus, //+
         Star, //*
         OpenParen, //(
         CloseParen, //)
+        KeywordLet, //let
         EOF,
     }
 
