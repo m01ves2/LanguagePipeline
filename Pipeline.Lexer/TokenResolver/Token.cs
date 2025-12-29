@@ -1,9 +1,9 @@
-﻿namespace Tokenizer
+﻿namespace Pipeline.Lexer.TokenResolver
 {
-    enum TokenType
+    public enum TokenType
     {
         NONE,
-        BAD,
+        Bad,
         Identifier, //x, foo, bar
         Number, //123
         Lambda, //=>
@@ -14,5 +14,5 @@
         EOF,
     }
 
-    record Token(string Text, TokenType Type, int Position);
+    public record Token(string Text, TokenType Type, int Position);
 }

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36811.4 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguagePipeline", "LanguagePipeline\LanguagePipeline.csproj", "{15AED8DF-6E74-44FB-9D5E-D402E9D302D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline.Lexer", "Pipeline.Lexer\Pipeline.Lexer.csproj", "{217B646D-B8D3-4457-8239-F6B4CFA7EA54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline.Application", "Pipeline.Application\Pipeline.Application.csproj", "{846DE065-A0D2-4AEE-98F6-833A3B8C6ED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline.Parser", "Pipeline.Parser\Pipeline.Parser.csproj", "{DB1B2725-6BA1-46B8-9210-24AA8864B9CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +17,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{15AED8DF-6E74-44FB-9D5E-D402E9D302D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15AED8DF-6E74-44FB-9D5E-D402E9D302D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15AED8DF-6E74-44FB-9D5E-D402E9D302D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15AED8DF-6E74-44FB-9D5E-D402E9D302D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{217B646D-B8D3-4457-8239-F6B4CFA7EA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217B646D-B8D3-4457-8239-F6B4CFA7EA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217B646D-B8D3-4457-8239-F6B4CFA7EA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217B646D-B8D3-4457-8239-F6B4CFA7EA54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846DE065-A0D2-4AEE-98F6-833A3B8C6ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846DE065-A0D2-4AEE-98F6-833A3B8C6ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846DE065-A0D2-4AEE-98F6-833A3B8C6ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846DE065-A0D2-4AEE-98F6-833A3B8C6ED6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB1B2725-6BA1-46B8-9210-24AA8864B9CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1B2725-6BA1-46B8-9210-24AA8864B9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB1B2725-6BA1-46B8-9210-24AA8864B9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1B2725-6BA1-46B8-9210-24AA8864B9CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
