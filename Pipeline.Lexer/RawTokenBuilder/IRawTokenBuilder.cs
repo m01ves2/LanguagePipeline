@@ -1,6 +1,6 @@
-﻿namespace Pipeline.Lexer.TokenBuilder
+﻿namespace Pipeline.Lexer.RawTokenBuilder
 {
-    internal interface IRawTokenBuilder
+    public interface IRawTokenBuilder
     {
         void Append(char c);
         RawToken Build(RawTokenKind kind);

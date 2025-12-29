@@ -1,8 +1,8 @@
-﻿using Pipeline.Lexer.TokenBuilder;
+﻿using Pipeline.Lexer.RawTokenBuilder;
 
 namespace Pipeline.Lexer.TokenResolver
 {
-    internal class TokenResolver : ITokenResolver
+    public class TokenResolver : ITokenResolver
     {
         private readonly Dictionary<string, TokenType> Operators = new Dictionary<string, TokenType>(){
             { "+", TokenType.Plus },
@@ -17,7 +17,7 @@ namespace Pipeline.Lexer.TokenResolver
             { "let", TokenType.KeywordLet}
         };
 
-        public Token Resolve(RawToken rawToken)
+        public IEnumerable<Token> Resolve(RawToken rawToken)
         {
             TokenType type;
             switch (rawToken.Kind) {
@@ -45,7 +45,64 @@ namespace Pipeline.Lexer.TokenResolver
                     type = TokenType.Bad;
                     break;
             }
-            return new Token(rawToken.Text, type, rawToken.Position);
+
+            if(type == TokenType.Bad) {
+                foreach (var t in SplitBadToken(rawToken))
+                    yield return t;
+            }
+            else {
+                yield return new Token(rawToken.Text, type, rawToken.Position);
+            }
+        }
+
+        public HashSet<char> GetOperatorChars()
+        {
+            HashSet<char> chars = new HashSet<char>();
+
+            foreach (var item in Operators.Keys) {
+                for(int i = 0; i < item.Length; i++) {
+                    chars.Add(item[i]);
+                }
+            }
+            return chars;
+        }
+
+        private IEnumerable<Token> SplitBadToken(RawToken badToken)
+        {
+            string text = badToken.Text;
+            int pos = badToken.Position;
+
+            while (text.Length > 0) {
+                // ищем максимальный оператор в начале строки
+                string match = null;
+                TokenType type = TokenType.Bad;
+
+                foreach (var op in Operators.Keys.OrderByDescending(s => s.Length)) {
+                    if (text.StartsWith(op)) {
+                        match = op;
+                        type = Operators[op];
+                        break;
+                    }
+                }
+
+                if (match != null) {
+                    yield return new Token(match, type, pos);
+                    text = text.Substring(match.Length);
+                    pos += match.Length;
+                }
+                else {
+                    // символ не оператор
+                    char c = text[0];
+                    TokenType t = char.IsLetter(c) ? TokenType.Identifier :
+                                  char.IsDigit(c) ? TokenType.Number :
+                                  TokenType.Bad;
+
+                    yield return new Token(c.ToString(), t, pos);
+
+                    text = text.Substring(1);
+                    pos += 1;
+                }
+            }
         }
     }
 }

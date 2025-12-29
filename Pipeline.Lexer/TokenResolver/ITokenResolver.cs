@@ -1,9 +1,10 @@
-﻿using Pipeline.Lexer.TokenBuilder;
+﻿using Pipeline.Lexer.RawTokenBuilder;
 
 namespace Pipeline.Lexer.TokenResolver
 {
-    internal interface ITokenResolver
+    public interface ITokenResolver
     {
-        Token Resolve(RawToken rawToken);
+        IEnumerable<Token> Resolve(RawToken rawToken);
+        HashSet<char> GetOperatorChars();
     }
 }

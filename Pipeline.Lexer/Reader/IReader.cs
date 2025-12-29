@@ -1,6 +1,6 @@
 ﻿namespace Pipeline.Lexer.Reader
 {
-    internal interface IReader
+    public interface IReader
     {
         char? ReadChar();
     }

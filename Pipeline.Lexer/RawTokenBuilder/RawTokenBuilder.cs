@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace Pipeline.Lexer.TokenBuilder
+namespace Pipeline.Lexer.RawTokenBuilder
 {
-    internal class RawTokenBuilder : IRawTokenBuilder
+    public class RawTokenBuilder : IRawTokenBuilder
     {
         private StringBuilder _sb = new StringBuilder();
         private int _startPosition = -1;

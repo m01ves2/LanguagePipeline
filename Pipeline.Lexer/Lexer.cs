@@ -1,14 +1,11 @@
 ﻿using Pipeline.Lexer.Classifier;
 using Pipeline.Lexer.Reader;
-using Pipeline.Lexer.TokenBuilder;
+using Pipeline.Lexer.RawTokenBuilder;
 using Pipeline.Lexer.TokenResolver;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Pipeline.Lexer
 {
-    internal class Lexer
+    public class Lexer
     {
         private readonly IReader _reader;
         private readonly IRawTokenBuilder _rawTokenBuilder;
@@ -47,7 +44,7 @@ namespace Pipeline.Lexer
                 if (r is null) {
                     if (_classifier.State != ClassifierState.Start) {
                         RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                        tokens.Add(_tokenResolver.Resolve(rawToken));
+                        tokens.AddRange(_tokenResolver.Resolve(rawToken));
                     }
                     break;
                 }
@@ -71,7 +68,7 @@ namespace Pipeline.Lexer
                                 _rawTokenBuilder.Start(index);
 
                             RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                            tokens.Add(_tokenResolver.Resolve(rawToken));
+                            tokens.AddRange(_tokenResolver.Resolve(rawToken));
 
                             _classifier.Reset();
                             break;
@@ -82,13 +79,13 @@ namespace Pipeline.Lexer
 
                             isReprocess = true;
                             RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                            tokens.Add(_tokenResolver.Resolve(rawToken));
+                            tokens.AddRange(_tokenResolver.Resolve(rawToken));
                             _classifier.Reset();
                             break;
                         }
                     case ClassifierAction.Error: {
                             RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                            tokens.Add(_tokenResolver.Resolve(rawToken));
+                            tokens.AddRange(_tokenResolver.Resolve(rawToken));
                             _classifier.Reset();
                             break;
                         }

@@ -1,4 +1,4 @@
-﻿namespace Pipeline.Lexer.TokenBuilder
+﻿namespace Pipeline.Lexer.RawTokenBuilder
 {
     public enum RawTokenKind
     {
