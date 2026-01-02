@@ -5,7 +5,7 @@
         public ClassifierState State { get; private set; } = ClassifierState.Start;
         private static HashSet<char> _operatorChars;
                                 //[
-                                //    '(', ')', '+', '*', '=', '>', '<'
+                                //    '(', ')', '+', '*', '=', '>', '<', ';'
                                 //];
 
         public Classifier(HashSet<char> operatorChars)

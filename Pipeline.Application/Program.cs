@@ -10,7 +10,7 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "let a =>^(2+3);==>=";
+            string input = "let a =>^(2+3);==>=;";
 
             IReader reader = new Reader(input);
             ITokenResolver resolver = new TokenResolver();
@@ -19,11 +19,11 @@ namespace Pipeline.Application
             IClassifier classifier = new Classifier(resolver.GetOperatorChars());
 
             Lexer.Lexer lexer = new Lexer.Lexer(reader, builder, classifier, resolver);
-            var tree = lexer.Process();
+            var tokens = lexer.Process();
 
             Console.WriteLine("input: " + input);
 
-            foreach (var token in tree) {
+            foreach (var token in tokens) {
                 Console.WriteLine("-------------------------");
                 Console.WriteLine("Token: " + token.Text);
                 Console.WriteLine("Token type: " + token.Type);

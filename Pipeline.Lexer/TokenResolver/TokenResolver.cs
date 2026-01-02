@@ -11,6 +11,7 @@ namespace Pipeline.Lexer.TokenResolver
             { "=", TokenType.Equal },
             { "(", TokenType.OpenParen },
             { ")", TokenType.CloseParen },
+            { ";", TokenType.Semicolon},
         };
 
         private readonly Dictionary<string, TokenType> Keywords = new Dictionary<string, TokenType>(){
@@ -40,6 +41,9 @@ namespace Pipeline.Lexer.TokenResolver
                     }
                     else
                         type = TokenType.Bad;
+                    break;
+                case RawTokenKind.Semicolon:
+                        type = TokenType.Semicolon;
                     break;
                 default:
                     type = TokenType.Bad;

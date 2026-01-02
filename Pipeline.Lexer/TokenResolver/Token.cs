@@ -13,6 +13,7 @@
         OpenParen, //(
         CloseParen, //)
         KeywordLet, //let
+        Semicolon, // ;
         EOF,
     }
 

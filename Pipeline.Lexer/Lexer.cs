@@ -83,12 +83,6 @@ namespace Pipeline.Lexer
                             _classifier.Reset();
                             break;
                         }
-                    //case ClassifierAction.Error: {
-                    //        RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
-                    //        tokens.AddRange(_tokenResolver.Resolve(rawToken));
-                    //        _classifier.Reset();
-                    //        break;
-                    //    }
                     case ClassifierAction.Error: {
                             if (!_rawTokenBuilder.isEmpty()) {
                                 // Выпустить уже накопленный токен
@@ -109,6 +103,8 @@ namespace Pipeline.Lexer
                         }
                 }
             }
+
+            tokens.Add(new Token("EOF", TokenType.EOF, index));
             return tokens;
         }
     }
