@@ -13,8 +13,7 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "(2 + 3 * 4) * 5 + 3";
-            //string input = "(2 + 3) + 1";
+            string input = "((2 + 3) * 4 - 1) * 5 / 2 - 3";
             Context context = new Context();
 
             IReader reader = new Reader(input);

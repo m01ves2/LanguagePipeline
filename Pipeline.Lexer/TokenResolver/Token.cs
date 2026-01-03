@@ -10,6 +10,8 @@
         Lambda, //=>
         Plus, //+
         Star, //*
+        Minus, //-
+        Divide, // \\
         OpenParen, //(
         CloseParen, //)
         KeywordLet, //let

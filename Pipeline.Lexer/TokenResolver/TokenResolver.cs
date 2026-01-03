@@ -7,6 +7,8 @@ namespace Pipeline.Lexer.TokenResolver
         private readonly Dictionary<string, TokenType> Operators = new Dictionary<string, TokenType>(){
             { "+", TokenType.Plus },
             { "*", TokenType.Star },
+            { "-", TokenType.Minus },
+            { "/", TokenType.Divide },
             { "=>", TokenType.Lambda },
             { "=", TokenType.Equal },
             { "(", TokenType.OpenParen },

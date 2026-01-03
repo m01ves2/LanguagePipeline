@@ -92,6 +92,10 @@ namespace Pipeline.Parser
                         binaryOperation = BinaryOperation.Add;
                         Consume(); // поглотили +
                         break;
+                    case TokenType.Minus:
+                        binaryOperation = BinaryOperation.Subtract;
+                        Consume();
+                        break;
 
                     case TokenType.CloseParen:
                         return left;
@@ -116,10 +120,17 @@ namespace Pipeline.Parser
                 switch (operationToken.Type) {
                     case TokenType.Plus:
                         return left;
+                    case TokenType.Minus:
+                        return left;
 
                     case TokenType.Star:
                         binaryOperation = BinaryOperation.Multiply;
                         Consume(); //поглотили *
+                        break;
+
+                    case TokenType.Divide:
+                        binaryOperation = BinaryOperation.Divide;
+                        Consume();
                         break;
 
                     //case TokenType.CloseParen:

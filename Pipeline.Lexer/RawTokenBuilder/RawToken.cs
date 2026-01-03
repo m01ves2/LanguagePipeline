@@ -5,7 +5,7 @@
         Bad,
         Identifier, //x, foo, bar
         Number, //123
-        Operator, // +, *, =, >, ), (,
+        Operator, // +, *, -, /, =, >, ), (,
         Semicolon, //;
     }
 
