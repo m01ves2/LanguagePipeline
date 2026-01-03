@@ -1,8 +1,20 @@
-﻿namespace Pipeline.Parser.AST.Statements
+﻿using Pipeline.Parser.AST.Expressions;
+using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Statements
 {
     public class LetStatementSyntax : StatementSyntax
     {
-        public override void Execute(Context context)
+        public string Identifier { get; }
+        public ExpressionSyntax Expression { get; }
+        
+        public LetStatementSyntax(string identifier, ExpressionSyntax expression)
+        {
+            Identifier = identifier;
+            Expression = expression;
+        }
+
+        public override object? Execute(Context context)
         {
             throw new NotImplementedException();
         }

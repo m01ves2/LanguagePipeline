@@ -5,7 +5,8 @@ using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser;
 using Pipeline.Parser.AST;
 using Pipeline.Parser.AST.Expressions;
-using System.Data;
+using Pipeline.Parser.AST.Statements;
+using Pipeline.Parser.ASTParser;
 
 namespace Pipeline.Application
 {
@@ -13,7 +14,7 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "((2 + 3) * 4 - 1) * 5 / 2 - 3";
+            string input = "((2 + 3) * 4 - 1) * 5 / 2 - 3; 4*2; 4-3";
             Context context = new Context();
 
             IReader reader = new Reader(input);
@@ -34,13 +35,13 @@ namespace Pipeline.Application
                 Console.WriteLine("Token position " + token.Position);
             }
 
-            Parser.Parser parser = new Parser.Parser(tokens.ToList());
+            var parser = new Parser.ASTParser.Parser(tokens.ToList());
             SyntaxNode node = parser.Parse();
             Console.WriteLine("Parser has finished working");
 
-            if(node is ExpressionSyntax) {
-                ExpressionSyntax expression = (ExpressionSyntax)node;
-                Console.WriteLine("Result: " + expression.Evaluate(context));
+            if (node is ProgramSyntax) {
+                var program = (ProgramSyntax)node;
+                Console.WriteLine("Result: " + program.Execute(context));
             }
         }
     }

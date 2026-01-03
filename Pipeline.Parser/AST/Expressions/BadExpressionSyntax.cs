@@ -1,4 +1,6 @@
-﻿namespace Pipeline.Parser.AST.Expressions
+﻿using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Expressions
 {
     public class BadExpressionSyntax : ExpressionSyntax
     {

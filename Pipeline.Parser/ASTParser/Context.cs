@@ -1,4 +1,4 @@
-﻿namespace Pipeline.Parser
+﻿namespace Pipeline.Parser.ASTParser
 {
     public class Context
     {

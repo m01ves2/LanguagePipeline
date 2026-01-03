@@ -1,10 +1,18 @@
-﻿namespace Pipeline.Parser.AST.Statements
+﻿using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Statements
 {
     public class BadStatementSyntax : StatementSyntax
     {
-        public override void Execute(Context context)
+        public string Message { get; }
+
+        public BadStatementSyntax(string message)
         {
-            throw new NotImplementedException();
+            Message = message;
+        }
+        public override object? Execute(Context context)
+        {
+            throw new InvalidOperationException($"Cannot execute invalid statement: {Message}");
         }
     }
 }

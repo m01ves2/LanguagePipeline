@@ -1,80 +1,20 @@
-﻿//Program::= Statement * EOF
-
-//Statement::= LetStatement
-//              | ExpressionStatement
-
-//LetStatement::= 'let' Identifier '=' Expression ';'
-
-//ExpressionStatement ::= Expression ';'
-
-//Expression  ::= Additive
-
-//Additive    ::= Multiplicative (('+' ) Multiplicative)*
-
-//Multiplicative ::= Primary (('*') Primary)*
-
-//Primary     ::= Number
-//              | Identifier
-//              | '(' Expression ')'
-
-//ParseExpression()
-//  ->ParseAdditive()
-//     ->ParseMultiplicative()
-//        ->ParsePrimary()
-
-using Pipeline.Lexer.TokenResolver;
-using Pipeline.Parser.AST;
+﻿using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser.AST.Expressions;
-using System.Reflection.Metadata.Ecma335;
 
-namespace Pipeline.Parser
+namespace Pipeline.Parser.ASTParser
 {
-    public class Parser
+    public partial class Parser
     {
-        private readonly List<Token> _tokens;
-        private int _position;
-        private Token Current => GetToken(_position);
-
-        public Parser(List<Token> tokens)
-        {
-            _position = 0;
-            _tokens = tokens;
-        }
-
-        Token GetToken(int index)
-        {
-            if (index >= _tokens.Count)
-                return _tokens[^1]; // EOF _tokens[_tokens.Count - 1]
-            return _tokens[index];
-        }
-
-        Token Peek(int offset)
-        {
-            return GetToken(_position + offset);
-        }
-
-        void Consume()
-        {
-            _position++;
-        }
-
-        public SyntaxNode Parse()
-        {
-            ExpressionSyntax expressionSyntax = ParseExpression();
-            return expressionSyntax;
-        }
-
-
-        Token Match(TokenType type)
-        {
-            throw new NotImplementedException(); //если тип совпал → consume, если нет → создать диагностическую ошибку, но продолжить
-        }
-
         private ExpressionSyntax ParseExpression()
         {
             var expr = ParseAdditive();
-            //if (Current.Type == TokenType.Bad)
-            //    return new BadExpressionSyntax("");
+            if (Current.Type == TokenType.Bad)
+                return new BadExpressionSyntax("Parser error: wrong token");
+
+            if(Current.Type == TokenType.Semicolon) {
+                Consume(); // поглотить ;
+            }
+
             return expr;
         }
 
@@ -82,7 +22,7 @@ namespace Pipeline.Parser
         {
             ExpressionSyntax left = ParseMultiplicative();
 
-            while (Current.Type != TokenType.EOF) {
+            while (Current.Type != TokenType.EOF && Current.Type != TokenType.Semicolon) {
 
                 BinaryOperation binaryOperation;
                 Token operationToken = Current;
@@ -113,16 +53,11 @@ namespace Pipeline.Parser
         {
             ExpressionSyntax left = ParsePrimary();
 
-            while (Current.Type != TokenType.EOF) {
+            while (Current.Type != TokenType.EOF && Current.Type != TokenType.Semicolon) {
                 BinaryOperation binaryOperation;
                 Token operationToken = Current;
 
                 switch (operationToken.Type) {
-                    case TokenType.Plus:
-                        return left;
-                    case TokenType.Minus:
-                        return left;
-
                     case TokenType.Star:
                         binaryOperation = BinaryOperation.Multiply;
                         Consume(); //поглотили *
@@ -132,9 +67,6 @@ namespace Pipeline.Parser
                         binaryOperation = BinaryOperation.Divide;
                         Consume();
                         break;
-
-                    //case TokenType.CloseParen:
-                    //    return left;
 
                     default:
                         return left;
@@ -170,7 +102,7 @@ namespace Pipeline.Parser
         private ExpressionSyntax ParsePrimaryNumber()
         {
             double value;
-            Token token = Current; 
+            Token token = Current;
             Consume(); //поглотили токен
             bool success = double.TryParse(token.Text, out value);
             if (success)
@@ -178,7 +110,7 @@ namespace Pipeline.Parser
             else
                 return new BadExpressionSyntax($"Can't parse literal expression: {token.Text}");
         }
-        private ExpressionSyntax? ParsePrimaryIdentifier()
+        private ExpressionSyntax ParsePrimaryIdentifier()
         {
             Token token = Current;
             Consume(); //поглотили токен
@@ -189,7 +121,7 @@ namespace Pipeline.Parser
             Consume(); //поглотили (
             ExpressionSyntax expression = ParseExpression();
             Token token = Current;
-            if(token.Type != TokenType.CloseParen) {
+            if (token.Type != TokenType.CloseParen) {
                 return new BadExpressionSyntax("Unexpected end of expression");
             }
             Consume(); //поглотили )

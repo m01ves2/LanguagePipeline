@@ -1,8 +1,10 @@
-﻿namespace Pipeline.Parser.AST.Statements
+﻿using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Statements
 {
     public abstract class StatementSyntax : SyntaxNode
     {
-        public abstract void Execute(Context context);
+        public abstract object? Execute(Context context);
 
         public override string Print()
         {

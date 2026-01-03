@@ -1,4 +1,6 @@
-﻿namespace Pipeline.Parser.AST.Expressions
+﻿using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Expressions
 {
     public enum BinaryOperation
     {
@@ -25,8 +27,8 @@
 
         public override double Evaluate(Context ctx)
         {
-            var left = (double)Left.Evaluate(ctx);
-            var right = (double)Right.Evaluate(ctx);
+            double left = Left.Evaluate(ctx);
+            double right = Right.Evaluate(ctx);
 
             switch (Operation) {
                 case BinaryOperation.Add: return left + right;
@@ -36,11 +38,10 @@
                     if (right == 0)
                         throw new DivideByZeroException("Run time error: division by zero.");
                     else
-                        return ((double)left) / right;
+                        return left / right;
                 default: 
                     throw new InvalidOperationException("Unknown operation");
             }
         }
-
     }
 }

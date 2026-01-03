@@ -1,10 +1,25 @@
-﻿namespace Pipeline.Parser.AST.Statements
+﻿using Pipeline.Parser.ASTParser;
+
+namespace Pipeline.Parser.AST.Statements
 {
     public class ProgramSyntax : StatementSyntax
     {
-        public override void Execute(Context context)
+        public IReadOnlyList<StatementSyntax> Statements { get; }
+
+        public ProgramSyntax(IReadOnlyList<StatementSyntax> statements)
         {
-            throw new NotImplementedException();
+            Statements = statements;
+        }
+
+        public override object? Execute(Context context)
+        {
+            object? last = null;
+
+            foreach (var statement in Statements) {
+                last = statement.Execute(context);
+            }
+
+            return last;
         }
     }
 }
