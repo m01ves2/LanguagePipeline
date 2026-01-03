@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pipeline.Lexer\Pipeline.Lexer.csproj" />
+  </ItemGroup>
+
 </Project>

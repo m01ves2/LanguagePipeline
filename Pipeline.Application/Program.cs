@@ -1,7 +1,10 @@
-﻿using Pipeline.Lexer.Reader;
+﻿using Pipeline.Lexer.Classifier;
 using Pipeline.Lexer.RawTokenBuilder;
-using Pipeline.Lexer.Classifier;
+using Pipeline.Lexer.Reader;
 using Pipeline.Lexer.TokenResolver;
+using Pipeline.Parser;
+using Pipeline.Parser.AST;
+using Pipeline.Parser.AST.Expressions;
 using System.Data;
 
 namespace Pipeline.Application
@@ -10,7 +13,9 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "let a =>^(2+3);==>=;";
+            string input = "(2 + 3 * 4) * 5 + 3";
+            //string input = "(2 + 3) + 1";
+            Context context = new Context();
 
             IReader reader = new Reader(input);
             ITokenResolver resolver = new TokenResolver();
@@ -28,6 +33,15 @@ namespace Pipeline.Application
                 Console.WriteLine("Token: " + token.Text);
                 Console.WriteLine("Token type: " + token.Type);
                 Console.WriteLine("Token position " + token.Position);
+            }
+
+            Parser.Parser parser = new Parser.Parser(tokens.ToList());
+            SyntaxNode node = parser.Parse();
+            Console.WriteLine("Parser has finished working");
+
+            if(node is ExpressionSyntax) {
+                ExpressionSyntax expression = (ExpressionSyntax)node;
+                Console.WriteLine("Result: " + expression.Evaluate(context));
             }
         }
     }
