@@ -14,9 +14,13 @@ namespace Pipeline.Application
     {
         static void Main(string[] args)
         {
-            string input = "((2 + 3) * 4 - 1) * 5 / 2 - 3; 4*2; 4-3";
+            //string input = "((2 + 3) * 4 - 1) * 5 / 2 - 3; 4*2;";
+
+            string input = "let a=> 2*3;\nlet b =>a+2;\na + b";
             Context context = new Context();
 
+            //Console.WriteLine("Input expression:");
+            //string input = Console.ReadLine();
             IReader reader = new Reader(input);
             ITokenResolver resolver = new TokenResolver();
 
@@ -26,18 +30,17 @@ namespace Pipeline.Application
             Lexer.Lexer lexer = new Lexer.Lexer(reader, builder, classifier, resolver);
             var tokens = lexer.Process();
 
-            Console.WriteLine("input: " + input);
+            Console.WriteLine("input:\n" + input);
 
-            foreach (var token in tokens) {
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("Token: " + token.Text);
-                Console.WriteLine("Token type: " + token.Type);
-                Console.WriteLine("Token position " + token.Position);
-            }
+            //foreach (var token in tokens) {
+            //    Console.WriteLine("-------------------------");
+            //    Console.WriteLine("Token: " + token.Text);
+            //    Console.WriteLine("Token type: " + token.Type);
+            //    Console.WriteLine("Token position " + token.Position);
+            //}
 
             var parser = new Parser.ASTParser.Parser(tokens.ToList());
             SyntaxNode node = parser.Parse();
-            Console.WriteLine("Parser has finished working");
 
             if (node is ProgramSyntax) {
                 var program = (ProgramSyntax)node;

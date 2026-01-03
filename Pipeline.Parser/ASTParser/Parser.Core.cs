@@ -17,16 +17,11 @@
 //              | Identifier
 //              | '(' Expression ')'
 
-//Parse:
-//ParseExpression()
-//  ->ParseAdditive()
-//     ->ParseMultiplicative()
-//        ->ParsePrimary()
-
 using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser.AST;
 using Pipeline.Parser.AST.Expressions;
 using Pipeline.Parser.AST.Statements;
+using Pipeline.Parser.ASTParser.Exceptions;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Pipeline.Parser.ASTParser
@@ -55,15 +50,19 @@ namespace Pipeline.Parser.ASTParser
             return GetToken(_position + offset);
         }
 
-        void Consume()
+        private void Consume(TokenType expectedType)
         {
+            if (Current.Type != expectedType)
+                throw new ParserException($"Unexpected token: {Current.Type}, expected {expectedType}");
+
             _position++;
         }
+
 
         //Token Match(TokenType type)
         //{
         //    if (Current.Type == type) {
-        //        Consume();
+        //        Consume(type);
         //    }
 
         //    //ReportError($"Expected {type}, got {Current.Type}");
@@ -72,7 +71,12 @@ namespace Pipeline.Parser.ASTParser
 
         public SyntaxNode Parse()
         {
-            return ParseProgram();
+            try {
+                return ParseProgram();
+            }
+            catch (Exception e) {
+                return new BadStatementSyntax($"Parser error: {e.Message}");
+            }
         }
     }
 }

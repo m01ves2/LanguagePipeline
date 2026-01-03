@@ -16,7 +16,8 @@ namespace Pipeline.Parser.AST.Statements
 
         public override object? Execute(Context context)
         {
-            throw new NotImplementedException();
+            context.SetVariable(Identifier, Expression.Evaluate(context));
+            return null;
         }
     }
 }

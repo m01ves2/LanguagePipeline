@@ -2,18 +2,18 @@
 {
     public class Context
     {
-        Dictionary<string, int> variables;
+        Dictionary<string, double> variables;
         public Context()
         {
-            variables = new Dictionary<string, int>();
+            variables = new Dictionary<string, double>();
         }
         // получаем значение переменной по ее имени
-        public int GetVariable(string name)
+        public double GetVariable(string name)
         {
             return variables[name];
         }
 
-        public void SetVariable(string name, int value)
+        public void SetVariable(string name, double value)
         {
             if (variables.ContainsKey(name))
                 variables[name] = value;

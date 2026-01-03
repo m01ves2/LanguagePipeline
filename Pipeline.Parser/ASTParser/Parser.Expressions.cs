@@ -1,6 +1,13 @@
 ﻿using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser.AST.Expressions;
 
+//Parse Expression:
+//ParseExpression()
+//  ->ParseAdditive()
+//     ->ParseMultiplicative()
+//        ->ParsePrimary()
+
+
 namespace Pipeline.Parser.ASTParser
 {
     public partial class Parser
@@ -12,7 +19,7 @@ namespace Pipeline.Parser.ASTParser
                 return new BadExpressionSyntax("Parser error: wrong token");
 
             if(Current.Type == TokenType.Semicolon) {
-                Consume(); // поглотить ;
+                Consume(TokenType.Semicolon); // поглотить ;
             }
 
             return expr;
@@ -30,11 +37,11 @@ namespace Pipeline.Parser.ASTParser
                 switch (operationToken.Type) {
                     case TokenType.Plus:
                         binaryOperation = BinaryOperation.Add;
-                        Consume(); // поглотили +
+                        Consume(TokenType.Plus); // поглотили +
                         break;
                     case TokenType.Minus:
                         binaryOperation = BinaryOperation.Subtract;
-                        Consume();
+                        Consume(TokenType.Minus);
                         break;
 
                     case TokenType.CloseParen:
@@ -60,12 +67,12 @@ namespace Pipeline.Parser.ASTParser
                 switch (operationToken.Type) {
                     case TokenType.Star:
                         binaryOperation = BinaryOperation.Multiply;
-                        Consume(); //поглотили *
+                        Consume(TokenType.Star); //поглотили *
                         break;
 
                     case TokenType.Divide:
                         binaryOperation = BinaryOperation.Divide;
-                        Consume();
+                        Consume(TokenType.Divide);
                         break;
 
                     default:
@@ -103,7 +110,7 @@ namespace Pipeline.Parser.ASTParser
         {
             double value;
             Token token = Current;
-            Consume(); //поглотили токен
+            Consume(TokenType.Number); //поглотили токен
             bool success = double.TryParse(token.Text, out value);
             if (success)
                 return new LiteralExpressionSyntax(value);
@@ -113,18 +120,18 @@ namespace Pipeline.Parser.ASTParser
         private ExpressionSyntax ParsePrimaryIdentifier()
         {
             Token token = Current;
-            Consume(); //поглотили токен
+            Consume(TokenType.Identifier); //поглотили токен
             return new IdentifierExpressionSyntax(token.Text);
         }
         private ExpressionSyntax ParseExpressionPrimary()
         {
-            Consume(); //поглотили (
+            Consume(TokenType.OpenParen); //поглотили (
             ExpressionSyntax expression = ParseExpression();
             Token token = Current;
             if (token.Type != TokenType.CloseParen) {
                 return new BadExpressionSyntax("Unexpected end of expression");
             }
-            Consume(); //поглотили )
+            Consume(TokenType.CloseParen); //поглотили )
             return expression;
         }
     }

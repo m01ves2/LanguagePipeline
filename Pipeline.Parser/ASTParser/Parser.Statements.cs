@@ -1,5 +1,12 @@
 ﻿using Pipeline.Lexer.TokenResolver;
+using Pipeline.Parser.AST.Expressions;
 using Pipeline.Parser.AST.Statements;
+
+//Parse Statement:
+//ParseStatement()
+//  ->ParseExpressionStatement() | ->ParseLetStatement()
+//     ->ParseExpression()
+
 
 namespace Pipeline.Parser.ASTParser
 {
@@ -16,7 +23,7 @@ namespace Pipeline.Parser.ASTParser
             return new ProgramSyntax(statements);
         }
 
-        private StatementSyntax ParseStatement() 
+        private StatementSyntax ParseStatement()
         {
             if (Current.Type == TokenType.KeywordLet)
                 return ParseLetStatement();
@@ -32,7 +39,17 @@ namespace Pipeline.Parser.ASTParser
         }
         private StatementSyntax ParseLetStatement()
         {
-            return new BadStatementSyntax("ParseLetStatement");
+            Token token = Current;
+            Consume(TokenType.KeywordLet);
+
+            token = Current;
+            Consume(TokenType.Identifier);
+            
+            string identifier = token.Text;
+            Consume(TokenType.Lambda);
+            
+            ExpressionSyntax expression = ParseExpression();
+            return new LetStatementSyntax(identifier, expression);
         }
 
     }
