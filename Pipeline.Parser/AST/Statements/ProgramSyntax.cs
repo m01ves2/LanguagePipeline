@@ -1,4 +1,5 @@
-﻿using Pipeline.Parser.ASTParser;
+﻿using Pipeline.Parser.AST.Exceptions;
+using Pipeline.Parser.ASTParser;
 
 namespace Pipeline.Parser.AST.Statements
 {
@@ -17,8 +18,13 @@ namespace Pipeline.Parser.AST.Statements
         {
             object? last = null;
 
-            foreach (var statement in Statements) {
-                last = statement.Execute(context);
+            try {
+                foreach (var statement in Statements) {
+                    last = statement.Execute(context);
+                }
+            }
+            catch (RuntimeException ex) {
+                last = $"{ex.Message}";
             }
 
             return last;

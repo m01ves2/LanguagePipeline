@@ -25,16 +25,24 @@ namespace Pipeline.Parser.ASTParser
 
         private StatementSyntax ParseStatement()
         {
-            if (Current.Type == TokenType.KeywordLet)
-                return ParseLetStatement();
-            else
-                return ParseExpressionStatement();
+            StatementSyntax statement = null;
+            if (Current.Type == TokenType.KeywordLet) {
+                statement = ParseLetStatement();
+            }
+            else {
+                statement = ParseExpressionStatement();
+            }
+
+            if (Current.Type == TokenType.Semicolon) {
+                Consume(TokenType.Semicolon); // поглотить ;
+            }
+            
+            return statement;
         }
 
         private StatementSyntax ParseExpressionStatement()
         {
             var expression = ParseExpression();
-            //Consume(TokenType.Semicolon);
             return new ExpressionStatementSyntax(expression);
         }
         private StatementSyntax ParseLetStatement()
@@ -49,6 +57,7 @@ namespace Pipeline.Parser.ASTParser
             Consume(TokenType.Lambda);
             
             ExpressionSyntax expression = ParseExpression();
+
             return new LetStatementSyntax(identifier, expression);
         }
 

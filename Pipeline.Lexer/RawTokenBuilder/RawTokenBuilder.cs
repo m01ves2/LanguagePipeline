@@ -29,7 +29,7 @@ namespace Pipeline.Lexer.RawTokenBuilder
             _sb.Clear();
         }
 
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             return _sb.Length == 0;
         }

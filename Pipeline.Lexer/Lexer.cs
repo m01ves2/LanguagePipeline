@@ -12,7 +12,7 @@ namespace Pipeline.Lexer
         private readonly IClassifier _classifier;
         private readonly ITokenResolver _tokenResolver;
 
-        private Dictionary<ClassifierState, RawTokenKind> MapStateToRawKind = new Dictionary<ClassifierState, RawTokenKind>()
+        private readonly Dictionary<ClassifierState, RawTokenKind> MapStateToRawKind = new Dictionary<ClassifierState, RawTokenKind>()
         {
             { ClassifierState.Identifier, RawTokenKind.Identifier },
             { ClassifierState.Number, RawTokenKind.Number },
@@ -56,7 +56,7 @@ namespace Pipeline.Lexer
                     case ClassifierAction.Continue: {
                             if(_classifier.State != ClassifierState.Start) {
 
-                                if(_rawTokenBuilder.isEmpty()) 
+                                if(_rawTokenBuilder.IsEmpty()) 
                                     _rawTokenBuilder.Start(index);                   
                                 
                                 _rawTokenBuilder.Append(c);
@@ -64,7 +64,7 @@ namespace Pipeline.Lexer
                             break; 
                         }
                     case ClassifierAction.Emit: {
-                            if (_rawTokenBuilder.isEmpty())
+                            if (_rawTokenBuilder.IsEmpty())
                                 _rawTokenBuilder.Start(index);
 
                             RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
@@ -74,7 +74,7 @@ namespace Pipeline.Lexer
                             break;
                         }
                     case ClassifierAction.EmitAndReprocess: {
-                            if (_rawTokenBuilder.isEmpty())
+                            if (_rawTokenBuilder.IsEmpty())
                                 _rawTokenBuilder.Start(index);
 
                             isReprocess = true;
@@ -84,7 +84,7 @@ namespace Pipeline.Lexer
                             break;
                         }
                     case ClassifierAction.Error: {
-                            if (!_rawTokenBuilder.isEmpty()) {
+                            if (!_rawTokenBuilder.IsEmpty()) {
                                 // Выпустить уже накопленный токен
                                 RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
                                 tokens.AddRange(_tokenResolver.Resolve(rawToken));

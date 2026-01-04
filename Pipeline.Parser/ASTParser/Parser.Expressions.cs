@@ -1,5 +1,6 @@
 ﻿using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser.AST.Expressions;
+using Pipeline.Parser.ASTParser.Exceptions;
 
 //Parse Expression:
 //ParseExpression()
@@ -15,13 +16,6 @@ namespace Pipeline.Parser.ASTParser
         private ExpressionSyntax ParseExpression()
         {
             var expr = ParseAdditive();
-            if (Current.Type == TokenType.Bad)
-                return new BadExpressionSyntax("Parser error: wrong token");
-
-            if(Current.Type == TokenType.Semicolon) {
-                Consume(TokenType.Semicolon); // поглотить ;
-            }
-
             return expr;
         }
 
@@ -45,9 +39,15 @@ namespace Pipeline.Parser.ASTParser
                         break;
 
                     case TokenType.CloseParen:
+                    case TokenType.Semicolon:
+                    case TokenType.EOF:
                         return left;
 
-                    default: return new BadExpressionSyntax("Parser error: wrong expression");
+                    case TokenType.Bad:
+                        throw new ParserException($"Parser error: Invalid token in additive expression at position {operationToken.Position}: {operationToken.Text}");
+                    default:
+                        throw new ParserException($"Parser error: Unexpected token {operationToken.Type} in additive expression at position {operationToken.Position}");
+
                 }
                 ExpressionSyntax right = ParseMultiplicative();
                 ExpressionSyntax binaryExpression = new BinaryExpressionSyntax(left, binaryOperation, right);
@@ -75,6 +75,14 @@ namespace Pipeline.Parser.ASTParser
                         Consume(TokenType.Divide);
                         break;
 
+                    case TokenType.CloseParen:
+                    case TokenType.Semicolon:
+                    case TokenType.EOF:
+                        return left;
+
+                    case TokenType.Bad:
+                        throw new ParserException($"Parser error: Invalid token in multiplicative expression at position {operationToken.Position}: {operationToken.Text}");
+
                     default:
                         return left;
                 }
@@ -100,7 +108,7 @@ namespace Pipeline.Parser.ASTParser
                 expression = ParseExpressionPrimary();
             }
             else {
-                expression = new BadExpressionSyntax($"Wrong primary expression");
+                throw new ParserException($"Parser error: Invalid token in primary expression at position {token.Position}: {token.Text}");
             }
 
             return expression;
@@ -115,7 +123,7 @@ namespace Pipeline.Parser.ASTParser
             if (success)
                 return new LiteralExpressionSyntax(value);
             else
-                return new BadExpressionSyntax($"Can't parse literal expression: {token.Text}");
+                throw new ParserException($"Parser error: Invalid token in primary expression at position {token.Position}: {token.Text}");
         }
         private ExpressionSyntax ParsePrimaryIdentifier()
         {
@@ -129,7 +137,7 @@ namespace Pipeline.Parser.ASTParser
             ExpressionSyntax expression = ParseExpression();
             Token token = Current;
             if (token.Type != TokenType.CloseParen) {
-                return new BadExpressionSyntax("Unexpected end of expression");
+                throw new ParserException($"Parser error: Invalid token in primary expression at position {token.Position}: {token.Text}");
             }
             Consume(TokenType.CloseParen); //поглотили )
             return expression;

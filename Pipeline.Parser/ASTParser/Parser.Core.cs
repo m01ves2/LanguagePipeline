@@ -53,7 +53,7 @@ namespace Pipeline.Parser.ASTParser
         private void Consume(TokenType expectedType)
         {
             if (Current.Type != expectedType)
-                throw new ParserException($"Unexpected token: {Current.Type}, expected {expectedType}");
+                throw new ParserException($"Parser error: Unexpected token: {Current.Type}, expected {expectedType}");
 
             _position++;
         }
@@ -71,12 +71,7 @@ namespace Pipeline.Parser.ASTParser
 
         public SyntaxNode Parse()
         {
-            try {
-                return ParseProgram();
-            }
-            catch (Exception e) {
-                return new BadStatementSyntax($"Parser error: {e.Message}");
-            }
+            return ParseProgram();
         }
     }
 }

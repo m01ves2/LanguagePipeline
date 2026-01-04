@@ -6,6 +6,6 @@
         RawToken Build(RawTokenKind kind);
         void Start(int startPosition);
         void Reset();
-        bool isEmpty();
+        bool IsEmpty();
     }
 }

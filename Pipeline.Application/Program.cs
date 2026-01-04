@@ -26,17 +26,22 @@ namespace Pipeline.Application
             Lexer.Lexer lexer = new Lexer.Lexer(reader, builder, classifier, resolver);
             var tokens = lexer.Process();
 
-            Console.WriteLine("input:\n" + input);         
+            Console.WriteLine("input:\n" + input);
 
-            var parser = new Parser.ASTParser.Parser(tokens.ToList());
-            SyntaxNode node = parser.Parse();
+            try {
+                var parser = new Parser.ASTParser.Parser(tokens.ToList());
+                SyntaxNode node = parser.Parse();
 
-            if (node is ProgramSyntax) {
-                var program = (ProgramSyntax)node;
-                Console.WriteLine("Result: " + program.Execute(context));
+                if (node is ProgramSyntax) {
+                    var program = (ProgramSyntax)node;
+                    Console.WriteLine("Result: " + program.Execute(context));
+                }
+
+                SyntaxTreePrinter.Print(node);
             }
-
-            SyntaxTreePrinter.Print(node);
+            catch (Exception e) {
+                Console.WriteLine($"Syntax error: {e.Message}");
+            }
         }
     }
 }

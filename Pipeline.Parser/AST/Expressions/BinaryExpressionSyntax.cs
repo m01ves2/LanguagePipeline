@@ -38,11 +38,11 @@ namespace Pipeline.Parser.AST.Expressions
                 case BinaryOperation.Multiply: return left * right;
                 case BinaryOperation.Divide:
                     if (right == 0)
-                        throw new DivideByZeroException("Run time error: division by zero.");
+                        throw new DivideByZeroException("Runtime error: division by zero.");
                     else
                         return left / right;
                 default: 
-                    throw new InvalidOperationException("Unknown operation");
+                    throw new InvalidOperationException("Runtime error: Unknown operation");
             }
         }
 

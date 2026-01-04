@@ -1,4 +1,6 @@
-﻿namespace Pipeline.Parser.ASTParser
+﻿using Pipeline.Parser.AST.Exceptions;
+
+namespace Pipeline.Parser.ASTParser
 {
     public class Context
     {
@@ -7,10 +9,14 @@
         {
             variables = new Dictionary<string, double>();
         }
-        // получаем значение переменной по ее имени
+        
         public double GetVariable(string name)
         {
-            return variables[name];
+            double value;
+            if (variables.TryGetValue(name, out value))
+                return value;
+            else
+                throw new RuntimeException($"Runtime error: variable '{name}' not found");
         }
 
         public void SetVariable(string name, double value)
