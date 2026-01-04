@@ -6,6 +6,8 @@ namespace Pipeline.Parser.AST.Statements
     {
         public IReadOnlyList<StatementSyntax> Statements { get; }
 
+        public override string NodeName => $"Program";
+
         public ProgramSyntax(IReadOnlyList<StatementSyntax> statements)
         {
             Statements = statements;
@@ -20,6 +22,11 @@ namespace Pipeline.Parser.AST.Statements
             }
 
             return last;
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Statements;
         }
     }
 }

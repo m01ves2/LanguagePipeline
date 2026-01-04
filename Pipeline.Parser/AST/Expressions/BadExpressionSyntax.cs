@@ -6,6 +6,8 @@ namespace Pipeline.Parser.AST.Expressions
     {
         public string Message { get; }
 
+        public override string NodeName => $"BadExpression ({Message})";
+
         public BadExpressionSyntax(string message)
         {
             Message = message;
@@ -14,6 +16,11 @@ namespace Pipeline.Parser.AST.Expressions
         public override double Evaluate(Context context)
         {
             throw new InvalidOperationException($"Cannot evaluate invalid expression: {Message}");
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield break; //return Enumerable.Empty<SyntaxNode>();
         }
     }
 }

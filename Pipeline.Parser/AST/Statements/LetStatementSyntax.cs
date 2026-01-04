@@ -7,7 +7,9 @@ namespace Pipeline.Parser.AST.Statements
     {
         public string Identifier { get; }
         public ExpressionSyntax Expression { get; }
-        
+
+        public override string NodeName => $"LetStatement ({Identifier})";
+
         public LetStatementSyntax(string identifier, ExpressionSyntax expression)
         {
             Identifier = identifier;
@@ -18,6 +20,11 @@ namespace Pipeline.Parser.AST.Statements
         {
             context.SetVariable(Identifier, Expression.Evaluate(context));
             return null;
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return Expression;
         }
     }
 }

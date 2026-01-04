@@ -15,6 +15,8 @@ namespace Pipeline.Parser.AST.Expressions
         public BinaryOperation Operation { get; }
         public ExpressionSyntax Right { get; }
 
+        public override string NodeName => $"BinaryExpression ({Operation})";
+
         public BinaryExpressionSyntax(
             ExpressionSyntax left,
             BinaryOperation operation,
@@ -42,6 +44,12 @@ namespace Pipeline.Parser.AST.Expressions
                 default: 
                     throw new InvalidOperationException("Unknown operation");
             }
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return Left;
+            yield return Right;
         }
     }
 }

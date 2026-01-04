@@ -2,6 +2,7 @@
 {
     public abstract class SyntaxNode
     {
-        public abstract string Print();
+        public abstract IEnumerable<SyntaxNode> GetChildren();
+        public abstract string NodeName { get; }
     }
 }

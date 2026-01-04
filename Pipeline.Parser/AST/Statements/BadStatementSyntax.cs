@@ -6,6 +6,8 @@ namespace Pipeline.Parser.AST.Statements
     {
         public string Message { get; }
 
+        public override string NodeName => $"BadStatement ({Message})";
+
         public BadStatementSyntax(string message)
         {
             Message = message;
@@ -13,6 +15,11 @@ namespace Pipeline.Parser.AST.Statements
         public override object? Execute(Context context)
         {
             throw new InvalidOperationException($"Cannot execute invalid statement: {Message}");
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield break;
         }
     }
 }

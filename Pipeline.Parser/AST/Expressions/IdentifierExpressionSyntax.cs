@@ -11,9 +11,16 @@ namespace Pipeline.Parser.AST.Expressions
             _name = name;
         }
 
+        public override string NodeName => $"IdentifierExpression ({_name})";
+
         public override double Evaluate(Context context)
         {
             return context.GetVariable(_name);
+        }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield break;
         }
     }
 }

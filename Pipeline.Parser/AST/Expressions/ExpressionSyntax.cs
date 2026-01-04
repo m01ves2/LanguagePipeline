@@ -5,10 +5,5 @@ namespace Pipeline.Parser.AST.Expressions
     public abstract class ExpressionSyntax : SyntaxNode
     {
         public abstract double Evaluate(Context context);
-
-        public override string Print()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
