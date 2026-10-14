@@ -1,28 +1,23 @@
-﻿//Program::= Statement * EOF
+﻿//Program ::= Statement * EOF
 
-//Statement::= LetStatement
-//              | ExpressionStatement
+//Statement ::= LetStatement | ExpressionStatement
 
-//LetStatement::= 'let' Identifier '=' Expression ';'
+//LetStatement ::= 'let' Identifier '=>' Expression ';'
 
 //ExpressionStatement ::= Expression ';'
 
 //Expression  ::= Additive
 
-//Additive    ::= Multiplicative (('+' ) Multiplicative)*
+//Additive::= Multiplicative(('+' | '-') Multiplicative)*
 
-//Multiplicative ::= Primary (('*') Primary)*
+//Multiplicative::= Primary(('*' | '/') Primary)*
 
-//Primary     ::= Number
-//              | Identifier
-//              | '(' Expression ')'
+
+//Primary     ::= Number | Identifier | '(' Expression ')'
 
 using Pipeline.Lexer.TokenResolver;
 using Pipeline.Parser.AST;
-using Pipeline.Parser.AST.Expressions;
-using Pipeline.Parser.AST.Statements;
 using Pipeline.Parser.ASTParser.Exceptions;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Pipeline.Parser.ASTParser
 {

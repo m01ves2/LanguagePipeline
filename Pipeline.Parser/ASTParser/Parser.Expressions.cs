@@ -51,7 +51,7 @@ namespace Pipeline.Parser.ASTParser
                 }
                 ExpressionSyntax right = ParseMultiplicative();
                 ExpressionSyntax binaryExpression = new BinaryExpressionSyntax(left, binaryOperation, right);
-                left = binaryExpression;
+                left = binaryExpression; //allows us make 2 + 3 + 4 + 5
             }
             return left;
         }
@@ -88,7 +88,7 @@ namespace Pipeline.Parser.ASTParser
                 }
                 ExpressionSyntax right = ParsePrimary();
                 ExpressionSyntax binaryExpression = new BinaryExpressionSyntax(left, binaryOperation, right);
-                left = binaryExpression;
+                left = binaryExpression; //allows us make 2 * 3 * 4 * 5
             }
             return left;
         }

@@ -42,6 +42,9 @@ namespace Pipeline.Lexer
                 isReprocess = false;
 
                 if (r is null) {
+                    // EOF: if a token is still being accumulated, emit it.
+                    // If the input is empty or all tokens have already been emitted,
+                    // there is nothing to emit.
                     if (_classifier.State != ClassifierState.Start) {
                         RawToken rawToken = _rawTokenBuilder.Build(MapStateToRawKind[_classifier.State]);
                         tokens.AddRange(_tokenResolver.Resolve(rawToken));

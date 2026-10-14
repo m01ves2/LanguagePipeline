@@ -52,9 +52,10 @@ namespace Pipeline.Lexer.TokenResolver
                     break;
             }
 
-            if(type == TokenType.Bad) {
-                foreach (var t in SplitBadToken(rawToken))
-                    yield return t;
+            //REVIEW исправили разбор всех bad-токенов на bad-токенов с изначальным типом RawTokenKind.Operator
+            if (rawToken.Kind == RawTokenKind.Operator && type == TokenType.Bad) {
+                foreach (var token in SplitOperators(rawToken))
+                    yield return token;
             }
             else {
                 yield return new Token(rawToken.Text, type, rawToken.Position);
@@ -73,44 +74,29 @@ namespace Pipeline.Lexer.TokenResolver
             return chars;
         }
 
-
-        private IEnumerable<Token> SplitBadToken(RawToken badToken)
+        private IEnumerable<Token> SplitOperators(RawToken operatorsToken)
         {
-            string text = badToken.Text;
-            int pos = badToken.Position;
+            string text = operatorsToken.Text;
+            int position = operatorsToken.Position;
 
             while (text.Length > 0) {
-                // ищем максимальный оператор в начале строки
-                string match = null;
-                TokenType type = TokenType.Bad;
+                // ищем максимальный оператор в оставшейся части text
+                string? match = Operators.Keys
+                    .OrderByDescending(op => op.Length)
+                    .FirstOrDefault(op => text.StartsWith(op));
 
-                foreach (var op in Operators.Keys.OrderByDescending(s => s.Length)) {
-                    if (text.StartsWith(op)) {
-                        match = op;
-                        type = Operators[op];
-                        break;
-                    }
+                if (match is null) {
+                    yield return new Token(text[0].ToString(), TokenType.Bad, position);
+
+                    text = text[1..];
+                    position++;
+                    continue;
                 }
 
-                if (match != null) {
-                    // валидный оператор
-                    yield return new Token(match, type, pos);
-                    text = text.Substring(match.Length);
-                    pos += match.Length;
-                }
-                else {
-                    // символ не оператор → определяем тип
-                    char c = text[0];
+                yield return new Token(match, Operators[match], position);
 
-                    TokenType t = char.IsLetter(c) ? TokenType.Identifier :
-                                  char.IsDigit(c) ? TokenType.Number :
-                                  TokenType.Bad;   // <--- вот здесь ^ превратится в Bad
-
-                    yield return new Token(c.ToString(), t, pos);
-
-                    text = text.Substring(1);
-                    pos += 1;
-                }
+                text = text[match.Length..];
+                position += match.Length;
             }
         }
 
